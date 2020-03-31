@@ -1,9 +1,11 @@
 //para começar a confirar seu servidor começar chamando o express
 const express = require('express');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const requireDir = require('require-dir');
 
 //iniciando o App
 const app = express();
+app.use(express.json());
 
 //Iniciando o DB
 mongoose.set('useNewUrlParser',true);
@@ -12,10 +14,8 @@ mongoose.connect(
     "mongodb+srv://mateus:mateus@cluster0-txh3a.mongodb.net/test?retryWrites=true&w=majority",
     { useFindAndModify: false}
 );
+requireDir('./src/models');
 
-//metodo para pegar requisicao e respostas
-app.get('/',(req,res) => {
-    res.send('Olá rocketseat,2563');
-});
+app.use('/api', require('./src/routes'));
 
 app.listen(3000);
